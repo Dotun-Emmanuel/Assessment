@@ -70,6 +70,7 @@ function ThirdSectionCard() {
               price={item?.new_price}
               total={item?.product_type}
               id={item?.id}
+              key={item.id}
             />
           )
         )}

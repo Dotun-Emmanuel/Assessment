@@ -61,6 +61,7 @@ function ThirdSectionCard() {
             origin_type: any;
           }) => (
             <ThirdSection
+              key={item.id}
               type={item?.origin_type}
               food={item?.name}
               Icon={item?.svg_image}

@@ -58,7 +58,7 @@ export default function ProfileTab() {
         <Tabs.Panel value="wish">
           {data?.results.map((item: { product: any; item_price: any }) => {
             return (
-              <div className="text-center">
+              <div className="text-center" key={item.product.name}>
                 <img src={plate.src} className="w-[100px] mx-auto" />
                 <p>{item.product.name}</p>
                 <p>{item.item_price}</p>

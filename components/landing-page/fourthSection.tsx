@@ -55,8 +55,9 @@ export default FourthSection;
 function Card() {
   return (
     <div className="grid grid-cols-3 w-[80%] gap-6 mx-auto">
-      {data.map((item) => (
+      {data.map((item, index) => (
         <FourthSectionCard
+          key={index}
           text={item.text}
           Icon={item.Icon.src}
           Img={item.Img.src}
