@@ -8,3 +8,25 @@
 .main{
   background-image: url(../public/back.png);
 }
+.mantine-1xwz9vs {
+  border-right: 0;
+  width: 35%
+}
+.mantine-Tabs-tab[data-active="true"]{
+border:none
+}
+
+.mantine-1xk8bhn{
+  width:250px;
+  height:50px;
+}
+
+@media (max-width: 768px) {
+.mantine-Tabs-root {
+  display:flex;
+  flex-direction: column;
+}
+.mantine-g7194{
+  width: max-content;
+}
+}

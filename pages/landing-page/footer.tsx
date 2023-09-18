@@ -35,7 +35,7 @@ function Footer() {
   return (
     <div className="mt-12">
       <div className="bg-[#F1E7EB] py-8">
-        <div className="w-[80%] flex items-center mx-auto gap-28">
+        <div className="w-[80%] md:flex items-center mx-auto gap-6 min-[300px]:flex-col">
           <p className="text-[#121212] text-base font-normal">
             Sign up for our newsletter to receive discounts, events and more.
           </p>
@@ -55,7 +55,7 @@ function Footer() {
         </div>
       </div>
       <div className="bg-[#FCF9FB] py-10">
-        <div className="flex justify-between w-[80%] mx-auto">
+        <div className="flex justify-between min-[300px]:flex-col md:flex-row w-[80%] mx-auto self-center items-center">
           <div className="flex flex-col gap-5">
             <div className="flex items-center gap-2">
               <CallCalling size="32" color="#121212" variant="Outline" />

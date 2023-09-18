@@ -1,16 +1,16 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Header from "../../components/landing-page/header";
+import Header from "../landing-page/header";
 import TextInput from "@/components/form/textInput";
 import PasswordInput from "@/components/form/passwordInput";
 import { COOKIE_STORAGE_KEY } from "@/libs/fetch";
 import { _axios } from "@/libs/axios";
-import { useMutation } from "@tanstack/react-query";
 import { setCookie } from "typescript-cookie";
 import { AxiosError, AxiosResponse } from "axios";
 import { Button } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { CallCalling, Facebook, Instagram, Sms, Whatsapp } from "iconsax-react";
+import { usePost } from "@/libs/post";
 
 export function loginCallback({ res }: { res: { access: string } }) {
   setCookie(COOKIE_STORAGE_KEY, res.access, {
@@ -22,14 +22,20 @@ export function loginCallback({ res }: { res: { access: string } }) {
 function SignIn() {
   const { replace } = useRouter();
 
-  const { mutate, isLoading } = useMutation({
-    mutationFn: (data: { email: string; password: string }) =>
-      _axios.post("/accounts/api/sign_in/", data),
-    onSuccess: callback,
-    onError: (error: AxiosError) => {
-      console.log(error.response?.data);
-    },
+  const { mutate, isLoading } = usePost({
+    url: "/accounts/api/sign_in/",
+    callback,
+    invalidateQuery: [],
   });
+
+  // const { mutate, isLoading } = useMutation({
+  //   mutationFn: (data: { email: string; password: string }) =>
+  //     _axios.post("/accounts/api/sign_in/", data),
+  //   onSuccess: callback,
+  //   onError: (error: AxiosError) => {
+  //     console.log(error.response?.data);
+  //   },
+  // });
 
   const form = useForm({
     initialValues: {

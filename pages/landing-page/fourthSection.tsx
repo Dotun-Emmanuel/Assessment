@@ -24,10 +24,10 @@ function FourthSection() {
   return (
     <div>
       <div className="bg-[#F3F4F6] pt-16">
-        <p className="text-[#212427] text-[32px] font-extrabold  text-center">
+        <p className="text-[#212427] md:text-[32px] min-[300px]:text-[24px] font-extrabold  text-center">
           YUMMY FEEDBACKS
         </p>
-        <p className="text-[#212427] text-base font-normal w-[506px] mx-auto mt-2 mb-16  text-center">
+        <p className="text-[#212427] text-base font-normal md:w-[506px] min-[300px]:w-[295px] mx-auto mt-2 mb-16 w-[57%]  text-center">
           We are always available to satisfy a cravings of our dearest customers
           at any hour, any time, any day.
         </p>
@@ -54,7 +54,7 @@ export default FourthSection;
 
 function Card() {
   return (
-    <div className="grid grid-cols-3 w-[80%] gap-6 mx-auto">
+    <div className="md:grid md:grid-cols-3 w-[80%] gap-6 mx-auto min-[300px]:flex min-[300px]:flex-col pb-4">
       {data.map((item, index) => (
         <FourthSectionCard
           key={index}

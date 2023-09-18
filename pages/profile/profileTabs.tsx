@@ -1,15 +1,27 @@
 import { Button, Tabs, TextInput } from "@mantine/core";
 import order from "../../public/order.png";
-import { useFetch } from "@/libs/specialFetch";
-import plate from "../../public/plate.png";
+import man from "../../public/man.png";
+import ChangePassword from "./changePasswordTab";
+import { useLogout } from "@/libs/logOut";
+import Link from "next/link";
+import WishList from "./wishList";
 
 export default function ProfileTab() {
-  const { data } = useFetch({ url: "/api/list-wishlist-items/" });
+  const logout = useLogout();
   return (
-    <div>
-      <p className="text-2xl">PROFILE</p>
-      <img src={plate.src} className="w-[150px]" />
-      <Tabs defaultValue="gallery" orientation="vertical">
+    <div className="mx-auto w-[80%] ">
+      <div className="md:mx-auto w-[94%] flex md:flex-col min-[300px]:flex-row gap-4 my-10">
+        <img src={man.src} className="w-[140px]" />
+        <div className="self-center">
+          <p>Ogunnaike Iswat</p>
+          <p className="mb-4">ogunnaikeiswat@gmail.com</p>
+        </div>
+      </div>
+      <Tabs
+        defaultValue="password"
+        orientation="vertical"
+        className="flex justify-between"
+      >
         <Tabs.List>
           <Tabs.Tab value="profile">
             <Button variant="default">Profile Information</Button>
@@ -24,17 +36,19 @@ export default function ProfileTab() {
             <Button variant="default">Change Password</Button>
           </Tabs.Tab>
           <Tabs.Tab value="log">
-            <Button variant="default">Log out</Button>
+            <Button variant="default" onClick={logout}>
+              Log out
+            </Button>
           </Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="profile">
           <div>
             <p className="text-2xl">Profile Info</p>
-            <TextInput className="w-[30%] mt-6 mb-6" />{" "}
-            <TextInput className="w-[30%] mb-6" />{" "}
-            <TextInput className="w-[30%] mb-6" />{" "}
-            <TextInput className="w-[30%] mb-12" />
+            <TextInput className=" my-6" />
+            <TextInput className=" mb-6" />
+            <TextInput className=" mb-6" />
+            <TextInput className=" mb-12" />
             <Button
               className="bg-[#771132] hover:bg-[#771132] w-[30%]"
               type="submit"
@@ -45,48 +59,26 @@ export default function ProfileTab() {
         </Tabs.Panel>
         <Tabs.Panel value="order">
           <div className="flex flex-col gap-6">
-            <img src={order.src} className="w-[200px]" />
-            <p className="text-2xl">You don’t have any orders yet.</p>
-            <p className="text-base">
+            <img src={order.src} className="w-[200px] mx-auto" />
+            <p className="text-2xl text-center">
+              You don’t have any orders yet.
+            </p>
+            <p className="text-base text-center">
               Please explore our catalogues to see our current offers.
             </p>
-            <Button className="bg-[#771132] hover:bg-[#771132] w-max ml-12">
-              Explore
-            </Button>
+            <Link href="/" className="self-center items-center">
+              <Button className="bg-[#771132] hover:bg-[#771132] h-10">
+                Explore
+              </Button>
+            </Link>
           </div>
         </Tabs.Panel>
         <Tabs.Panel value="wish">
-          {data?.results.map((item: { product: any; item_price: any }) => {
-            return (
-              <div className="text-center" key={item.product.name}>
-                <img src={plate.src} className="w-[100px] mx-auto" />
-                <p>{item.product.name}</p>
-                <p>{item.item_price}</p>
-              </div>
-            );
-          })}
+          <WishList />
         </Tabs.Panel>
         <Tabs.Panel value="password">
-          <div>
-            <p className="text-2xl">Update Password</p>
-            <TextInput
-              className="w-[30%] mt-6 mb-6"
-              placeholder="Old Password"
-            />{" "}
-            <TextInput className="w-[30%] mb-6" placeholder="New Password" />{" "}
-            <TextInput
-              className="w-[30%] mb-6"
-              placeholder="Confirm New Password"
-            />{" "}
-            <Button
-              className="bg-[#771132] hover:bg-[#771132] w-[30%]"
-              type="submit"
-            >
-              Update Password
-            </Button>
-          </div>
+          <ChangePassword />
         </Tabs.Panel>
-        <Tabs.Panel value="log">Settings tab content</Tabs.Panel>
       </Tabs>
     </div>
   );

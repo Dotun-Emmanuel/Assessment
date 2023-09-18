@@ -2,16 +2,31 @@ import { useEffect, useState } from "react";
 import { useFetch } from "@/libs/specialFetch";
 import bowl from "../../public/bowl.png";
 import { Button } from "@mantine/core";
+import { usePost } from "@/libs/post";
+import Link from "next/link";
 
 interface CartItem {
   quantity: number;
   product: any;
+  id: number;
 }
 
 export default function Order() {
   const { data } = useFetch({ url: "/api/list-cart-items/" });
   const [cartItems, setCartItem] = useState<CartItem[]>([]);
   const [totalPrice, setTotalPrice] = useState<any>(0);
+  const { mutate, isLoading } = usePost({
+    url: "/api/remove_from_cart/",
+    // callback: close,
+    invalidateQuery: [],
+  });
+
+  function removeFromCart(id: number) {
+    const payLoad = {
+      product_id: id,
+    };
+    mutate(payLoad);
+  }
 
   useEffect(() => {
     if (data) {
@@ -60,21 +75,28 @@ export default function Order() {
   };
 
   useEffect(() => {
-    const total = cartItems.reduce(
+    const total = cartItems?.reduce(
       (accumulator, item) =>
-        accumulator + parseFloat(item.product.new_price) * item.quantity,
+        accumulator + parseFloat(item?.product?.new_price) * item?.quantity,
       0
     );
-    setTotalPrice(total.toFixed(2)); 
+    setTotalPrice(total?.toFixed(2));
   }, [cartItems]);
 
   return (
     <div className="pt-14">
-      <div className="">
-        {cartItems.map((item: CartItem, index: number) => {
+      <div className="mx-auto w-[80%]">
+        <p className="text-[40px] font-extrabold border-b-[0.5px] pb-4">
+          YOUR CART
+        </p>
+        {cartItems?.map((item: CartItem, index: number) => {
+          // console.log(cartItems, "show me")
           return (
-            <div className=" pt-4 pb-14 text-center" key={index}>
-              <div className="flex w-[80%] mx-auto justify-between items-center">
+            <div
+              className=" pt-4 pb-14 text-center border-b-[0.5px]"
+              key={index}
+            >
+              <div className="flex justify-between items-center">
                 <img
                   src={bowl.src}
                   className="w-[183px]"
@@ -87,7 +109,7 @@ export default function Order() {
                   <div className="flex gap-3 border-[1px] mx-auto w-max px-2 mt-2">
                     <button
                       onClick={() => {
-                        increment(index); 
+                        increment(index);
                       }}
                     >
                       +
@@ -95,7 +117,7 @@ export default function Order() {
                     <p>{item?.quantity}</p>
                     <button
                       onClick={() => {
-                        decrement(index); 
+                        decrement(index);
                       }}
                     >
                       -
@@ -109,6 +131,9 @@ export default function Order() {
                   <Button
                     variant="subtle"
                     className="text-[#CA1818] hover:bg-transparent"
+                    onClick={() => {
+                      removeFromCart(item?.id);
+                    }}
                   >
                     Remove
                   </Button>
@@ -118,12 +143,21 @@ export default function Order() {
           );
         })}
       </div>
-      <p className="text-2xl text-end mr-12">SUB TOTAL:${totalPrice}</p>
-      <div className="flex gap-3 justify-end mr-8">
-        <Button variant="default">Continue Shopping</Button>
-        <Button className="bg-[#771132] hover:bg-[#771132]" type="submit">
-          Check out
-        </Button>
+      <p className="text-2xl text-end mr-12 mt-8">SUB TOTAL:${totalPrice}</p>
+      <div className="flex gap-3 justify-end mr-8 mt-8">
+        <Link href="/shop">
+          <Button variant="default" size="lg">
+            Continue Shopping
+          </Button>
+        </Link>
+        <Link href="/payment">
+          <Button
+            className="bg-[#771132] hover:bg-[#771132] h-12"
+            type="submit"
+          >
+            Check out
+          </Button>
+        </Link>
       </div>
     </div>
   );

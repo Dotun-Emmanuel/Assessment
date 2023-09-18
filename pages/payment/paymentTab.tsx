@@ -6,58 +6,110 @@ import {
   Select,
   Stepper,
 } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { usePost } from "@/libs/post";
 import { ArrowDown2 } from "iconsax-react";
 import { useState } from "react";
+import TextInput from "@/components/form/textInput";
+import PayForCartTab from "./payForCartTab";
+import Link from "next/link";
 
 export default function PaymentTab() {
-  const [active, setActive] = useState(1);
+  const { mutate, isLoading } = usePost({
+    url: "/api/delivery_details/",
+    callback,
+    invalidateQuery: [],
+  });
+
+  const form = useForm({
+    initialValues: {
+      first_name: "",
+      last_name: "",
+      country: "",
+      address: "",
+      apartment: "",
+    },
+  });
+
+  function submit(values: {
+    first_name: string;
+    last_name: string;
+    country: string;
+    address: string;
+    apartment: string;
+    card_number: string;
+    card_holder_name: string;
+    expiry_date: string;
+    security_code: string;
+  }) {
+    const payload = {
+      ...values,
+      first_name: values.first_name,
+      last_name: values.last_name,
+      country: values.country,
+      address: values.address,
+      apartment: values.apartment,
+      card_number: values.card_number,
+      card_holder_name: values.card_holder_name,
+      expiry_date: values.expiry_date,
+      security_code: values.security_code,
+    };
+    mutate(payload);
+    console.log(payload, "yesbaby");
+  }
+
+  function callback() {
+    close();
+    form.reset();
+  }
+
+  const [active, setActive] = useState(0);
   const nextStep = () =>
     setActive((current) => (current < 4 ? current + 1 : current));
   const prevStep = () =>
     setActive((current) => (current > 0 ? current - 1 : current));
   return (
-    <div>
+    <div className="w-[80%] mx-auto mt-12">
       <Stepper active={active} onStepClick={setActive} breakpoint="sm">
         <Stepper.Step label="Information">
-          <div className="flex flex-col gap-6">
-            <p>Delivery Details</p>
-            <Select
-              size="md"
-              placeholder="Country"
-              data={["Female", "Male"]}
-              rightSectionWidth={30}
-              styles={{ rightSection: { pointerEvents: "none" } }}
-              rightSection={<ArrowDown2 color="#8f9198" className="w-[18px]" />}
-            />
-            <div className=" flex gap-6">
-              <InputBase placeholder="First Name" size="md" />
-              <InputBase placeholder="Last Name" size="md" />
-            </div>
-            <InputBase label="  " placeholder="Addresss" size="md" />
-            <InputBase
-              label=""
+          <form
+            className="flex flex-col gap-6 w-[50%] mx-auto mt-10"
+            onSubmit={form.onSubmit(submit as () => void)}
+          >
+            <p className="text-[32px]">Delivery Details</p>
+            <TextInput name="first_name" form={form} placeholder="First Name" />
+            <TextInput name="last_name" form={form} placeholder="Last name" />
+            <TextInput name="country" form={form} placeholder="country" />
+            <TextInput name="address" form={form} placeholder="address" />
+            <TextInput
+              name="apartment"
+              form={form}
               placeholder="Apartment Suite"
-              withAsterisk
-              size="md"
             />
-          </div>
+            <Group position="center" mt="xl">
+              <Link href="/cart">
+                <Button
+                  variant="default"
+                  className="border-[#771132] text-[#771132]"
+                >
+                  Return to Cart
+                </Button>
+              </Link>
+              <Button
+                className="bg-[#771132] hover:bg-[#771132] h-12"
+                onClick={nextStep}
+                type="submit"
+              >
+                Continue to shipping
+              </Button>
+            </Group>
+          </form>
         </Stepper.Step>
-
         <Stepper.Step label="Shipping">
-          <div className=" mt-8 mb-14 ">
+          <div className=" mt-8 mb-14 w-[50%] mx-auto">
             <div className="flex flex-col gap-6 mb-4">
-              <InputBase
-                label=""
-                placeholder="Contact"
-                withAsterisk
-                size="md"
-              />{" "}
-              <InputBase
-                label=""
-                placeholder="Address"
-                withAsterisk
-                size="md"
-              />
+              <InputBase label="" placeholder="Contact" size="lg" />{" "}
+              <InputBase label="" placeholder="Address" size="lg" />
             </div>
             <div className="flex flex-col gap-6">
               <p className="text-center mt-11">Shipping method</p>
@@ -82,99 +134,28 @@ export default function PaymentTab() {
                 <p>$25</p>
               </div>
             </div>
+            <Group position="center" className="mt-12">
+              <Button
+                variant="default"
+                className="border-[#771132] text-[#771132]"
+                onClick={prevStep}
+              >
+                Return to Information
+              </Button>
+              <Button
+                className="bg-[#771132] hover:bg-[#771132] h-12"
+                onClick={nextStep}
+                type="submit"
+              >
+                Continue to payment
+              </Button>
+            </Group>
           </div>
         </Stepper.Step>
         <Stepper.Step label="Payment">
-          <div>
-            <div className="flex flex-col gap-6 mb-4">
-              <InputBase
-                label=""
-                placeholder="Contact"
-                withAsterisk
-                size="md"
-              />{" "}
-              <InputBase
-                label=""
-                placeholder="Address"
-                withAsterisk
-                size="md"
-              />
-              <InputBase
-                label=""
-                placeholder="Shipping method"
-                withAsterisk
-                size="md"
-              />
-            </div>
-            <div className="flex flex-col gap-6 pb-5">
-              <p className="text-2xl">Payment</p>
-              <p>All transactions are secure and encrypted</p>
-
-              <InputBase label="  " placeholder="Credit Card" size="md" />
-              <InputBase
-                label=""
-                placeholder="Card number"
-                withAsterisk
-                size="md"
-              />
-              <InputBase
-                label=""
-                placeholder="Name on card"
-                withAsterisk
-                size="md"
-              />
-              <div className=" flex gap-6">
-                <InputBase placeholder="Expiry date" size="md" />
-                <InputBase placeholder="Security code" size="md" />
-              </div>
-            </div>
-          </div>
+          <PayForCartTab prevStep={prevStep} />
         </Stepper.Step>
       </Stepper>
-
-      {active === 0 ? (
-        <Group position="right" mt="xl">
-          <Button
-            className="bg-[#BF2018] hover:bg-[#BF2018]"
-            onClick={nextStep}
-          >
-            Assign Location
-          </Button>
-        </Group>
-      ) : active === 1 ? (
-        <div className="flex justify-between">
-          <Button onClick={prevStep} variant="default">
-            Details
-          </Button>
-          <Button
-            onClick={nextStep}
-            className="bg-[#BF2018] hover:bg-[#BF2018]"
-          >
-            Confirm Entries
-          </Button>
-        </div>
-      ) : active === 2 ? (
-        <div className="flex justify-between">
-          <Button onClick={prevStep} variant="default">
-            Details
-          </Button>
-          <Button
-            onClick={nextStep}
-            className="bg-[#BF2018] hover:bg-[#BF2018]"
-          >
-            Confirm Entries
-          </Button>
-        </div>
-      ) : (
-        <div className="flex justify-between">
-          <Button onClick={prevStep} variant="default">
-            Assign Location
-          </Button>
-          <Button className="bg-[#BF2018] hover:bg-[#BF2018]">
-            Save Entries
-          </Button>
-        </div>
-      )}
     </div>
   );
 }

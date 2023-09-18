@@ -1,4 +1,4 @@
-import Header from "../../components/landing-page/header";
+import Header from "../landing-page/header";
 import TextInput from "@/components/form/textInput";
 import PasswordInput from "@/components/form/passwordInput";
 import { usePost } from "@/libs/post";

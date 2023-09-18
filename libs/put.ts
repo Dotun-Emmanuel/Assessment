@@ -11,11 +11,11 @@ interface PostProps {
   encryptPayload?: boolean;
 }
 
-export async function poster(
+export async function putter(
   url: string,
   data: Record<string, unknown> | FormData
 ) {
-  const response = await _axios.post(url, data, {
+  const response = await _axios.put(url, data, {
     headers: getCookie(COOKIE_STORAGE_KEY)
       ? { Authorization: `Bearer ${getCookie(COOKIE_STORAGE_KEY)}` }
       : {},
@@ -23,10 +23,10 @@ export async function poster(
   return response;
 }
 
-export function usePost({ url, callback, invalidateQuery }: PostProps) {
+export function usePut({ url, callback, invalidateQuery }: PostProps) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: Record<string, unknown> | FormData) => poster(url, data),
+    mutationFn: (data: Record<string, unknown> | FormData) => putter(url, data),
     onSuccess: async (response: AxiosResponse) => {
       const _message = response?.data?.detail;
       handleSuccessNotification({
@@ -45,5 +45,3 @@ export function usePost({ url, callback, invalidateQuery }: PostProps) {
     },
   });
 }
-
-

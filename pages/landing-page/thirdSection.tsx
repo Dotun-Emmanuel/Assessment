@@ -18,10 +18,10 @@ function ThirdSection({ id, food, price, total }: any) {
     mutate(payLoad);
   }
   return (
-    <div className="bg-[#EFECE5] px-4 pt-4 pb-14 w-max mb-14">
+    <div className="bg-[#EFECE5] px-4 pt-2 pb-14">
       <div className="flex flex-col gap-5">
         <img src={bowl.src} className="w-[183px] mx-auto" />
-        <p className="text-[20px] font-extrabold">{food}</p>
+        <p className="text-[20px] font-extrabold md:text-center">{food}</p>
         <p className="text-[#A30551] text-2xl font-black mt-6 text-center">
           {price}
         </p>
@@ -45,11 +45,11 @@ function ThirdSectionCard() {
   const { data } = useFetch({ url: "/api/featured_product/" });
 
   return (
-    <div className=" w-[80%] mx-auto">
-      <p className="text-[#121212] text-[32px] font-extrabold pt-14 pb-[74px]">
+    <div className=" w-[80%] mx-auto mb-14">
+      <p className="text-[#121212] text-[32px] font-extrabold pt-14 pb-[74px] min-[300px]:text-center md:text-start">
         FEATURED PRODUCTS
       </p>
-      <div className=" grid grid-cols-3">
+      <div className=" md:grid md:grid-cols-3 gap-4 min-[300px]:flex min-[300px]:flex-col self-center items-center">
         {data?.map(
           (item: {
             id: number;

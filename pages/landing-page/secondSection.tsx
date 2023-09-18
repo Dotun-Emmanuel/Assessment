@@ -19,7 +19,7 @@ function SecondSection({ id, type, food, price, total }: any) {
     mutate(payLoad);
   }
   return (
-    <div className="bg-[#EFECE5] px-4 pt-4 my-20 pb-14 w-max">
+    <div className="bg-[#EFECE5] px-4 pt-4 md:my-20 pb-14">
       <div className="flex flex-col gap-5">
         <img src={plate.src} className="w-[183px] mx-auto" alt={""} />
         <p className="text-[#000000] text-xs font-medium mt-8 text-center">
@@ -48,7 +48,7 @@ function SecondSection({ id, type, food, price, total }: any) {
 export default function SecondSectionCard() {
   const { data } = useFetch({ url: "/api/best_seller/" });
   return (
-    <div className="flex gap-28">
+    <div className="md:flex md:gap-28 min-[300px]:grid md:flex-row self-center items-center gap-10">
       {data?.map(
         (item: {
           id: number;
@@ -76,13 +76,13 @@ export default function SecondSectionCard() {
 
 export function MiniWord() {
   return (
-    <div className="flex flex-col gap-4 justify-center	">
+    <div className="flex flex-col gap-4 justify-center min-[300px]:text-center md:text-start mb-8">
       <p className="text-[32px] font-normal leading-normal">BESTSELLERS</p>
-      <p className="text-base font-normal">
+      <p className="text-base font-normal w-96 text-center items-center self-center">
         Featuring our best products sourced from the best locations all around
         the world.
       </p>
-      <Button className="bg-[#771132] hover:bg-[#771132] w-max">
+      <Button className="bg-[#771132] hover:bg-[#771132] w-max min-[300px]:hidden md:block">
         Check it out
       </Button>
     </div>

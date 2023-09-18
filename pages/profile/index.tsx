@@ -1,5 +1,5 @@
-import Footer from "../../components/landing-page/footer";
-import Header from "../../components/landing-page/header";
+import Footer from "../landing-page/footer";
+import Header from "../landing-page/header";
 import ProfileTab from "./profileTabs";
 
 function Home() {
